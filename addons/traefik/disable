@@ -1,0 +1,11 @@
+#!/bin/bash -e
+set -e
+
+HELM="${SNAP}/microk8s-helm.wrapper"
+NAMESPACE="traefik"
+
+echo "Disabling Traefik Ingress controller"
+
+"${HELM}" uninstall traefik -n "${NAMESPACE}"
+
+echo "Disabled Traefik Ingress controller"

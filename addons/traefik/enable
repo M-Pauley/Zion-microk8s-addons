@@ -1,0 +1,31 @@
+#!/bin/bash -e
+
+HELM="${SNAP}/microk8s-helm.wrapper"
+
+NAMESPACE="traefik"
+TRAEFIK_CHART_VERSION="${TRAEFIK_CHART_VERSION:-34.1.0}"
+
+echo "Enabling traefik ingress controller"
+
+"${HELM}" repo update traefik || "${HELM}" repo add traefik https://helm.traefik.io/traefik
+"${HELM}" upgrade --install --create-namespace traefik traefik/traefik -n "${NAMESPACE}" --version "${TRAEFIK_CHART_VERSION}" "$@"
+
+echo "
+
+Traefik Ingress controller ${TRAEFIK_CHART_VERSION} has been installed. Next, you can start
+creating Ingress resources to access your services. Useful commands:
+
+1. Get the external IP of the LoadBalancer service.
+
+    $ microk8s kubectl get service -n traefik traefik
+
+2. If your cluster cannot provision LoadBalancer services, you can also use the NodePort service.
+
+    $ microk8s kubectl get service -n traefik traefik-ingress-service
+
+3. Access the Traefik Web UI at http://localhost:18080
+
+    $ microk8s kubectl port-forward -n traefik traefik-web-ui 18080:8080
+
+
+"

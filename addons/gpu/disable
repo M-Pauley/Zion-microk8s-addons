@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+DIR=`realpath $(dirname $0)`
+
+echo "
+WARNING: The gpu addon has been renamed to nvidia.
+
+Please use 'microk8s disable nvidia' instead.
+
+"
+
+$DIR/../nvidia/disable "${@}"
